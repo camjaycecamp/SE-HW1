@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Malice</title>
+    <script src="./backend.js" defer></script>
+    <script>
+        // js script function for using xmlhttprequest to find a tweet with backend's app.get
+        function findTweet() 
+        {
+            var tweetID = document.getElementById("tbx_EnterTweetID").value;
+            var httpReq = new XMLHttpRequest();
+            httpReq.open('GET', 'http://127.0.0.1:3000/tweets/' + tweetID);
+
+            httpReq.onload = () => 
+            {
+                try 
+                {
+                    document.getElementById("txa_FindTweet").innerHTML = httpReq.response;
+                }
+                catch (e)
+                {
+                    alert("Couldn't find a tweet attached to that ID");
+                }
+            }
+            httpReq.send();
+        }
+
+        // js script function for using xmlhttprequest to delete a tweet with backend's app.delete
+        function deleteTweet() 
+        {
+            var tweetID = document.getElementById("tbx_DeleteTweetID").value;
+            var httpReq = new XMLHttpRequest();
+            httpReq.open('DELETE', 'http://127.0.0.1:3000/tweets/' + tweetID);
+
+            httpReq.onload = () => 
+            {
+                try 
+                {
+                    alert(httpReq.response);
+                }
+                catch (e)
+                {
+                    alert("Couldn't find a tweet attached to that ID");
+                }
+            }
+            httpReq.send();
+        }
+
+        // js script function for using xmlhttprequest to create a tweet with backend's app.post
+        function createTweet() 
+        {
+            var tweetID = document.getElementById("tbx_CreateTweetID").value;
+            var tweetText = document.getElementById("txa_CreateTweet").value;
+            var httpReq = new XMLHttpRequest();
+            httpReq.open('POST', 'http://127.0.0.1:3000/tweets/' + tweetID, 
+            {
+                id: tweetID,
+                text: tweetText
+            });
+
+            httpReq.setRequestHeader('Content-Type', 'application/json');
+
+            httpReq.onload = () => 
+            {
+                alert(tweetText);
+            }
+            httpReq.send(JSON.stringify({id: tweetID, text: tweetText}));
+        }
+
+        // js script function for using xmlhttprequest to update a screen name using backend's app.put
+        function updateName() 
+        {
+            var realName = document.getElementById("tbx_RealName").value;
+            var newScreenName = document.getElementById("tbx_NewScreenName").value;
+            var httpReq = new XMLHttpRequest();
+            httpReq.open('PUT', 'http://127.0.0.1:3000/users', 
+            {
+                realName: realName,
+                newScreenName: newScreenName
+            });
+
+            httpReq.setRequestHeader('Content-Type', 'application/json');
+
+            httpReq.onload = () => 
+            {
+                alert(tweetText);
+            }
+            httpReq.send(JSON.stringify({realName: realName, newScreenName: newScreenName}));
+        }
+
+        // test function relevant for Assignment 2
+        function test_print()
+        {
+            console.log('test code');
+        }
+    </script>
+</head>
+<body>
+    
+    <img src="./images/Twitter-logo.jpg" alt="">
+
+
+    <h1>Welcome to Twitter</h1><br>
+
+
+    <h3>Get Information:</h3>
+    <form action="http://127.0.0.1:3000/tweets">
+        <input type="submit" value="Get all Tweets" />
+    </form><br>
+    <form action="http://127.0.0.1:3000/users">
+        <input type="submit" value="Get all User IDs" />
+    </for><br><br>
+
+
+    <h3>Find a Tweet:</h3>
+    <label>Tweet ID: </label>
+    <input type="text" id="tbx_EnterTweetID">
+    <button type="button" onclick="findTweet()">
+        Find Tweet
+    </button><br><br>
+    <textarea id="txa_FindTweet" cols="40" rows="7"></textarea><br><br>
+    
+
+    <h3>Delete a Tweet:</h3>
+    <label>Tweet ID: </label>
+    <input type="text" id="tbx_DeleteTweetID">
+    <button type="button" onclick="deleteTweet()">
+        Delete Tweet
+    </button><br><br>
+
+
+    <h3>Create a Tweet:</h3>
+    <label>New Tweet ID: </label>
+    <input type="text" id="tbx_CreateTweetID"><br>
+    <label>Tweet Content: </label>
+    <textarea id="txa_CreateTweet" cols="40" rows="7"></textarea><br><br>
+    <button type="button" onclick="createTweet()">
+        Create Tweet
+    </button><br><br><br>
+
+
+    <h3>Edit a Screen Name:</h3>
+    <label>User's Real Name: </label>
+    <input type="text" id="tbx_RealName"><br>
+    <label>New Screen Name: </label>
+    <input type="text" id="tbx_NewScreenName"><br><br>
+    <button type="button" onclick="updateName()">
+        Update Screen Name
+    </button>
+    
+</body>
+</html>
